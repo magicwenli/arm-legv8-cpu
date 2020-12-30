@@ -30,7 +30,6 @@ wire [63: 0] pc;
 
 CPU_SC cpu(clk, tempInstruction, ALU_result, data_mem_out, pc);
 
-dmem Data_Memory();
 
 initial begin
     clk = 1'b0;

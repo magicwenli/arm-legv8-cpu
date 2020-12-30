@@ -22,14 +22,14 @@
 
 module CPU_SC(
            input clk,
-           output [10: 0] instruction,
+           output [10: 0] tempInstruction,
            output [63: 0] ALU_result,
            output [63: 0] data_mem_out,
            output [63: 0] pc
        );
 // instruction memory
 wire [31: 0] instruction;
-reg [10: 0] tempInstruction;
+reg tempInstruction;
 
 // Register File
 wire [63: 0] reg_data1;
@@ -44,7 +44,7 @@ wire [63:0] data_out1;
 wire [63:0] data_out2;
 
 // ALU
-wire [63: 0] ALU_result;
+wire ALU_result;
 wire temp_ALU_zero;
 wire [3: 0] temp_ALU_control;
 wire [63: 0] temp_ALU_input2;
@@ -53,11 +53,11 @@ wire [63: 0] temp_shift_immediate;
 
 
 // Data memory
-wire [63: 0] data_mem_out;
+wire data_mem_out;
 
 
 // PC
-reg [63: 0] pc;
+reg pc;
 wire [63: 0] next_pc;
 wire [63: 0] next_next_pc;
 wire [63: 0] shift_pc;
