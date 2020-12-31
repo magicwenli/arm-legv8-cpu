@@ -1,8 +1,8 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:52:07
-//  LastEditTime : 2020-12-31 16:08:29
-//  Description  : 64位 2路选择器  5位 2路选择器
+//  LastEditTime : 2020-12-31 17:03:48
+//  Description  : 64�? 2路�?�择�?  5�? 2路�?�择�?
 //*****
 `timescale 1ns / 1ps
 
@@ -13,7 +13,7 @@ module mux2_64(
            output reg [63: 0] muxOutput
        );
 
-always @( input1，input2，signal, muxOutput ) begin
+always @( input1, input2, signal, muxOutput ) begin
 
     if (signal == 0) begin
         muxOutput = input1;

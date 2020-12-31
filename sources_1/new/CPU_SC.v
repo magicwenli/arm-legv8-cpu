@@ -1,8 +1,8 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:54:41
-//  LastEditTime : 2020-12-31 16:56:37
-//  Description  : CPU 主文件
+//  LastEditTime : 2020-12-31 17:21:02
+//  Description  : CPU 主文�?
 //*****
 `timescale 1ns / 1ps
 
@@ -11,33 +11,33 @@ module CPU_SC( input CLOCK,
                input [63: 0] REG_DATA1,
                input [63: 0] REG_DATA2,
                input [63: 0] data_memory_out,
-               output reg [4: 0] READ_REG_1,
+               output [4: 0] READ_REG_1,
                output [4: 0] READ_REG_2,
-               output reg [4: 0] WRITE_REG,
+               output [4: 0] WRITE_REG,
                output [63: 0] ALU_Result_Out,
                output [63: 0] WRITE_REG_DATA,
-               output reg [63: 0] PC
+               output [63: 0] PC
              );
 
-reg REG2LOC;
-reg REGWRITE;
-reg MEMREAD;
-reg MEMWRITE;
-reg BRANCH;
-reg MEM2REG;
-reg ALUSRC;
-reg UNCON_BRANCH;
-reg [1: 0] ALU_OP;
+wire REG2LOC;
+wire REGWRITE;
+wire MEMREAD;
+wire MEMWRITE;
+wire BRANCH;
+wire MEM2REG;
+wire ALUSRC;
+wire UNCON_BRANCH;
+wire [1: 0] ALU_OP;
 
 wire [63: 0] nextPC;
 wire [63: 0] shiftPC;
 wire [63: 0] nextnextPC;
-reg [4: 0] tempRegNum1;
-reg [4: 0] tempRegNum2;
+wire [4: 0] tempRegNum1;
+wire [4: 0] tempRegNum2;
 wire [63: 0] tempImmediate;
 wire [63: 0] tempALUInput2;
 wire [63: 0] tempShiftImmediate;
-reg [10: 0] tempInstruction;
+wire [10: 0] tempInstruction;
 wire [3: 0] tempALUControl;
 wire tempALUZero;
 wire nextPCZero;
@@ -66,7 +66,10 @@ ControlUnit Control_Unit(CLOCK,
                          ALU_OP,
                          READ_REG_1,
                          WRITE_REG,
-                         PC);
+                         PC,
+                         tempRegNum1,
+                         tempRegNum2,
+                         tempInstruction);
 /* modules */
 SignExtend Sign_Extend(INSTRUCTION, tempImmediate);
 ShiftLeft2 Shift_Left2(tempImmediate, tempShiftImmediate);

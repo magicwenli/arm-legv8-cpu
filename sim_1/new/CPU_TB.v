@@ -1,7 +1,7 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 17:00:31
-//  LastEditTime : 2020-12-31 17:00:40
+//  LastEditTime : 2020-12-31 17:13:10
 //  Description  : 
 //*****
 `timescale 1ns / 1ps 
@@ -25,25 +25,25 @@ wire [63: 0] data_memory_out;
 wire [63: 0] ALU_Result_Out;
 
 /* Wires to connect CPU Control Lines to Memories */
-wire CONTROL_REG2LOC;
-wire CONTROL_REGWRITE;
-wire CONTROL_MEMREAD;
-wire CONTROL_MEMWRITE;
-wire CONTROL_BRANCH;
+wire REG2LOC;
+wire REGWRITE;
+wire MEMREAD;
+wire MEMWRITE;
+wire BRANCH;
 
 imem InsMem(instructionPC, instructionOut);
 
 dmem DataMem( ALU_Result_Out,
               DATA_OUT_2,
-              CONTROL_MEMREAD,
-              CONTROL_MEMWRITE,
+              MEMREAD,
+              MEMWRITE,
               data_memory_out);
 
 RegisterFile RegFile( READ_REG_1,
                       READ_REG_2,
                       WRITE_REG,
                       WRITE_DATA,
-                      CONTROL_REGWRITE,
+                      REGWRITE,
                       DATA_OUT_1,
                       DATA_OUT_2);
 

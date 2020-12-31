@@ -1,7 +1,7 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:55:49
-//  LastEditTime : 2020-12-31 16:32:18
+//  LastEditTime : 2020-12-31 17:20:53
 //  Description  : CU
 //*****
 `timescale 1ns / 1ps
@@ -23,12 +23,12 @@ module ControlUnit(
            output reg [1: 0] ALU_OP,
            output reg [4: 0] READ_REG_1,
            output reg [4: 0] WRITE_REG,
-           output reg [63: 0] PC
+           output reg [63: 0] PC,
+           output reg [4: 0] tempRegNum1,
+           output reg [4: 0] tempRegNum2,
+           output reg [10: 0] tempInstruction
        );
 
-reg [4: 0] tempRegNum1;
-reg [4: 0] tempRegNum2;
-reg [10: 0] tempInstruction;
 reg tempBranchZero;
 
 /* Initialize when the CPU is first run */
