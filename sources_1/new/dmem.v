@@ -1,53 +1,40 @@
+//*****
+//  Author       : magicwenli
+//  Date         : 2020-12-31 15:55:32
+//  LastEditTime : 2020-12-31 16:16:44
+//  Description  : 数据内存
+//*****
 `timescale 1ns / 1ps 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 2020/11/19 17:52:17
-// Design Name:
-// Module Name: dmem
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module dmem(
            input [63: 0] addr,
            input [63: 0] idata,
-           input mreadsig,
-           input mwritesig,
+           input MEMREAD,
+           input MEMWRITE,
            output reg [63: 0] odata
        );
 
-reg [63: 0]memory[31: 0];
+reg [63: 0]Data[31: 0];
 
 integer datanum;
 
+// 初始化 数据内存
 initial begin
     for (datanum = 0; datanum < 32; datanum = datanum + 1) begin
-        memory[datanum] = datanum * 100;
+        Data[datanum] = datanum * 100;
     end
 
-    memory[10] = 1540;
-    memory[11] = 2117;
+    Data[10] = 1540;
+    Data[11] = 2117;
 end
 
-always @(addr, idata, mreadsig, mwritesig) begin
-    if (mwritesig == 1) begin
-        memory[addr] = idata;
+always @(addr, idata, MEMREAD, MEMWRITE) begin
+    if (MEMWRITE == 1) begin
+        Data[addr] = idata;
     end
 
-    if (mreadsig == 1) begin
-        odata = memory[addr];
+    if (MEMREAD == 1) begin
+        odata = Data[addr];
     end
 end
 endmodule

@@ -1,23 +1,10 @@
-`timescale 1ns / 1ps 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 2020/12/02 15:34:53
-// Design Name:
-// Module Name: ALUControl
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
+//*****
+//  Author       : magicwenli
+//  Date         : 2020-12-31 15:50:39
+//  LastEditTime : 2020-12-31 15:51:54
+//  Description  : 左移2位
+//*****
+`timescale 1ns / 1ps
 
 module ShiftLeft2
        (
@@ -25,7 +12,7 @@ module ShiftLeft2
            output reg [63: 0] outputData
        );
 
-always @( * ) begin
+always @( inputData ) begin
     outputData = inputData << 2;
 end
 endmodule

@@ -1,55 +1,42 @@
+//*****
+//  Author       : magicwenli
+//  Date         : 2020-12-31 15:54:08
+//  LastEditTime : 2020-12-31 16:10:45
+//  Description  : 寄存器文件
+//*****
 `timescale 1ns / 1ps 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 2020/12/01 19:40:12
-// Design Name:
-// Module Name: RegisterFile
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module RegisterFile(
            input[4: 0] rreg1,             // read register 1
            input[4: 0] rreg2,             // read register 2
            input[4: 0] wreg,              // write register
            input[63: 0] wdata,            // write data
-           input regwrite,               // write signal
+           input REGWRITE,               // write signal
            output reg [63: 0]rdata1,      // read data 1
            output reg [63: 0]rdata2      // read data 2
        );
 
-reg [63: 0] registers[31: 0];
+reg [63: 0] Data[31: 0];
 
 integer regnum;
 
+// 初始化寄存器的数值 从0到30
 initial begin
 
     for (regnum = 0; regnum < 31; regnum = regnum + 1) begin
-        registers[regnum] = regnum;
+        Data[regnum] = regnum;
     end
 
-    registers[31] = 64'h00000000;
+    Data[31] = 64'h00000000;
 end
 
-always @(rreg1, rreg2, wreg, wdata, regwrite) begin
+always @(rreg1, rreg2, wreg, wdata, REGWRITE) begin
 
-    rdata1 = registers[rreg1];
-    rdata2 = registers[rreg2];
+    rdata1 = Data[rreg1];
+    rdata2 = Data[rreg2];
 
-    if (regwrite == 1) begin
-        registers[wreg] = wdata;
+    if (REGWRITE == 1) begin
+        Data[wreg] = wdata;
     end
 end
 endmodule

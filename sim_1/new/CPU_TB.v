@@ -1,24 +1,10 @@
+//*****
+//  Author       : magicwenli
+//  Date         : 2020-12-31 17:00:31
+//  LastEditTime : 2020-12-31 17:00:40
+//  Description  : 
+//*****
 `timescale 1ns / 1ps 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 2020/12/03 13:31:54
-// Design Name:
-// Module Name: CPU_TB
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module CPU_TB();
 
@@ -61,13 +47,24 @@ RegisterFile RegFile( READ_REG_1,
                       DATA_OUT_1,
                       DATA_OUT_2);
 
-CPU_SC cpu(clk, ALU_Result_Out, data_memory_out, instructionPC);
+CPU_SC cpu(.CLOCK(CLOCK),
+           .INSTRUCTION(instructionOut),
+           .REG_DATA1(DATA_OUT_1),
+           .REG_DATA2(DATA_OUT_2),
+           .data_memory_out(data_memory_out),
+           .READ_REG_1(READ_REG_1),
+           .READ_REG_2(READ_REG_2),
+           .WRITE_REG(writeReg),
+           .ALU_Result_Out(ALU_Result_Out),
+           .WRITE_REG_DATA(WRITE_DATA),
+           .PC(instructionPC)
+          );
 
 
 
 initial begin
     clk = 1'b0;
-    //    #30 $finish;
+    #30 $finish;
 end
 
 always begin

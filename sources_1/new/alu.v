@@ -1,30 +1,16 @@
-`timescale 1ns / 1ps 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 2020/10/27 17:24:01
-// Design Name:
-// Module Name: alu
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
-
+//*****
+//  Author       : magicwenli
+//  Date         : 2020-12-31 15:56:23
+//  LastEditTime : 2020-12-31 16:20:00
+//  Description  : ALU
+//*****
+`timescale 1ns / 1ps
 
 module ALU(
            input [63: 0] A,
            input [63: 0] B,
-           input [3: 0] opt,
-           output reg [63: 0] ans,
+           input [3: 0] CONTROL,
+           output reg [63: 0] RESULT,
            output reg zeroflag
        );
 
@@ -40,23 +26,23 @@ parameter	A_NOR = 4'b1100;
 // wire Ci = 1'b0;
 // adder32 a1(A, B, Ci, tmpans, Co);
 
-always@(A or B or opt) begin
-    case (opt)
+always@(A or B or CONTROL) begin
+    case (CONTROL)
         A_AND:
-            ans = A & B;
+            RESULT = A & B;
         A_OR:
-            ans = A | B;
+            RESULT = A | B;
         A_ADD:
-            ans = A + B;
+            RESULT = A + B;
         A_SUB:
-            ans = A - B;
+            RESULT = A - B;
         A_PAS:
-            ans = B;
+            RESULT = B;
         A_NOR:
-            ans = ~(A | B);
+            RESULT = ~(A | B);
     endcase
 
-    if (ans == 0) begin
+    if (RESULT == 0) begin
         zeroflag = 1'b1;
     end
     else begin
