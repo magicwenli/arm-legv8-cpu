@@ -1,7 +1,7 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 17:00:31
-//  LastEditTime : 2020-12-31 17:13:10
+//  LastEditTime : 2020-12-31 19:48:07
 //  Description  : 
 //*****
 `timescale 1ns / 1ps 
@@ -68,7 +68,7 @@ initial begin
 end
 
 always begin
-    #10 clk = ~clk;
+    #1 clk = ~clk;
 end
 
 endmodule
