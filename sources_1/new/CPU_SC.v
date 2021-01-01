@@ -1,7 +1,7 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:54:41
-//  LastEditTime : 2020-12-31 17:21:02
+//  LastEditTime : 2021-01-01 17:30:33
 //  Description  : CPU 主文�?
 //*****
 `timescale 1ns / 1ps
@@ -16,14 +16,14 @@ module CPU_SC( input CLOCK,
                output [4: 0] WRITE_REG,
                output [63: 0] ALU_Result_Out,
                output [63: 0] WRITE_REG_DATA,
-               output [63: 0] PC
+               output [63: 0] PC,
+               output REG2LOC,
+               output REGWRITE,
+               output MEMREAD,
+               output MEMWRITE,
+               output BRANCH
              );
 
-wire REG2LOC;
-wire REGWRITE;
-wire MEMREAD;
-wire MEMWRITE;
-wire BRANCH;
 wire MEM2REG;
 wire ALUSRC;
 wire UNCON_BRANCH;

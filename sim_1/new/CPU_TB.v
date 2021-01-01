@@ -1,14 +1,14 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 17:00:31
-//  LastEditTime : 2020-12-31 19:48:07
+//  LastEditTime : 2021-01-01 17:36:23
 //  Description  : 
 //*****
 `timescale 1ns / 1ps 
 
 module CPU_TB();
 
-reg clk;
+reg CLOCK;
 wire [63: 0] instructionPC;
 wire [31: 0] instructionOut;
 
@@ -54,21 +54,26 @@ CPU_SC cpu(.CLOCK(CLOCK),
            .data_memory_out(data_memory_out),
            .READ_REG_1(READ_REG_1),
            .READ_REG_2(READ_REG_2),
-           .WRITE_REG(writeReg),
+           .WRITE_REG(WRITE_REG),
            .ALU_Result_Out(ALU_Result_Out),
            .WRITE_REG_DATA(WRITE_DATA),
-           .PC(instructionPC)
+           .PC(instructionPC),
+           .REG2LOC(REG2LOC),
+           .REGWRITE(REGWRITE),
+           .MEMREAD(MEMREAD),
+           .MEMWRITE(MEMWRITE),
+           .BRANCH(BRANCH)
           );
 
 
 
 initial begin
-    clk = 1'b0;
+    CLOCK = 1'b0;
     #30 $finish;
 end
 
 always begin
-    #1 clk = ~clk;
+    #1 CLOCK = ~CLOCK;
 end
 
 endmodule
