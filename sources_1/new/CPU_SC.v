@@ -1,8 +1,8 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:54:41
-//  LastEditTime : 2021-01-01 17:30:33
-//  Description  : CPU 主文�?
+//  LastEditTime : 2021-01-01 18:49:59
+//  Description  : CPU 主文�???
 //*****
 `timescale 1ns / 1ps
 
@@ -28,7 +28,7 @@ wire MEM2REG;
 wire ALUSRC;
 wire UNCON_BRANCH;
 wire [1: 0] ALU_OP;
-
+wire JUMP;
 wire [63: 0] nextPC;
 wire [63: 0] shiftPC;
 wire [63: 0] nextnextPC;
@@ -44,9 +44,9 @@ wire nextPCZero;
 wire shiftPCZero;
 
 /* muxs */
-mux2_64 pcMUX(nextPC, shiftPC, JUMP, nextnextPC);
+mux2_pc pcMUX(nextPC, shiftPC, JUMP, nextnextPC);
 mux2_5 regMUX(tempRegNum1, tempRegNum2, REG2LOC, READ_REG_2);
-mux2_64 ALUMUX(REG_DATA2, tempImmediate, ALU_SRC, tempALUInput2);
+mux2_64 ALUMUX(REG_DATA2, tempImmediate, ALUSRC, tempALUInput2);
 mux2_64 dataMUX(data_memory_out, ALU_Result_Out, MEM2REG, WRITE_REG_DATA);
 
 /* Control Unit */
@@ -78,8 +78,8 @@ ShiftLeft2 Shift_Left2(tempImmediate, tempShiftImmediate);
 ALUControl ALU_Control(ALU_OP, tempInstruction, tempALUControl);
 
 /* ALU */
-ALU ALUResult(REG_DATA1, tempALUInput2, tempALUControl, ALU_Result_Out, temp_ALU_zero);
-ALU pcAdder(PC, 64'h00000004, 4'b0010, nextPC, nextPC_zero);
+ALU ALUResult(REG_DATA1, tempALUInput2, tempALUControl, ALU_Result_Out, tempALUZero);
+ALU pcAdder(PC, 64'h00000004, 4'b0010, nextPC, nextPCZero);
 ALU sheftAdder(PC, tempShiftImmediate, 4'b0010, shiftPC, shiftPCZero);
 
 endmodule
