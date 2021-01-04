@@ -1,7 +1,7 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:55:49
-//  LastEditTime : 2021-01-01 18:47:51
+//  LastEditTime : 2021-01-03 14:35:00
 //  Description  : CU
 //*****
 `timescale 1ns / 1ps
@@ -47,8 +47,17 @@ initial begin
 end
 
 /* Parse and set the CPU's Control bits */
-always @(posedge CLOCK or INSTRUCTION) begin
+always @(posedge CLOCK or posedge INSTRUCTION) begin
 
+    //Determine whether to branch
+    tempBranchZero = tempALUZero & BRANCH;
+    JUMP = UNCON_BRANCH | tempBranchZero;
+
+    // For non-branch code, set the next sequential PC value
+    if (JUMP == 1'b0) begin
+        PC <= #1 nextnextPC;
+    end
+    else
     // Set the PC to the jumped value
     if (JUMP == 1'b1) begin
         PC = #1 nextnextPC - 4;
@@ -154,13 +163,6 @@ always @(posedge CLOCK or INSTRUCTION) begin
         endcase
     end
 
-    //Determine whether to branch
-    tempBranchZero = tempALUZero & BRANCH;
-    JUMP = UNCON_BRANCH | tempBranchZero;
-
-    // For non-branch code, set the next sequential PC value
-    if (JUMP == 1'b0) begin
-        PC <= #1 nextnextPC;
-    end
+    
 end
 endmodule

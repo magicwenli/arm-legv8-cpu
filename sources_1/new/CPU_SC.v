@@ -1,8 +1,8 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:54:41
-//  LastEditTime : 2021-01-01 18:49:59
-//  Description  : CPU 主文�???
+//  LastEditTime : 2021-01-05 00:09:45
+//  Description  : CPU 主文�???
 //*****
 `timescale 1ns / 1ps
 
@@ -44,7 +44,7 @@ wire nextPCZero;
 wire shiftPCZero;
 
 /* muxs */
-mux2_pc pcMUX(nextPC, shiftPC, JUMP, nextnextPC);
+mux2_64 pcMUX(nextPC, shiftPC, JUMP, nextnextPC);
 mux2_5 regMUX(tempRegNum1, tempRegNum2, REG2LOC, READ_REG_2);
 mux2_64 ALUMUX(REG_DATA2, tempImmediate, ALUSRC, tempALUInput2);
 mux2_64 dataMUX(data_memory_out, ALU_Result_Out, MEM2REG, WRITE_REG_DATA);
