@@ -1,14 +1,17 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 17:00:31
-//  LastEditTime : 2021-01-01 17:36:23
-//  Description  : 
+//  LastEditTime : 2021-01-05 00:28:34
+//  Description  :
 //*****
-`timescale 1ns / 1ps 
+`timescale 1ns / 1ps
 
 module CPU_TB();
 
+/* Clock Signal */
 reg CLOCK;
+
+/* Wires to connect instruction memory to CPU */
 wire [63: 0] instructionPC;
 wire [31: 0] instructionOut;
 
@@ -25,44 +28,44 @@ wire [63: 0] data_memory_out;
 wire [63: 0] ALU_Result_Out;
 
 /* Wires to connect CPU Control Lines to Memories */
-wire REG2LOC;
-wire REGWRITE;
-wire MEMREAD;
-wire MEMWRITE;
-wire BRANCH;
+wire CONTROL_REG2LOC;
+wire CONTROL_REGWRITE;
+wire CONTROL_MEMREAD;
+wire CONTROL_MEMWRITE;
+wire CONTROL_BRANCH;
 
 imem InsMem(instructionPC, instructionOut);
 
 dmem DataMem( ALU_Result_Out,
               DATA_OUT_2,
-              MEMREAD,
-              MEMWRITE,
+              CONTROL_MEMREAD,
+              CONTROL_MEMWRITE,
               data_memory_out);
 
 RegisterFile RegFile( READ_REG_1,
                       READ_REG_2,
                       WRITE_REG,
                       WRITE_DATA,
-                      REGWRITE,
+                      CONTROL_REGWRITE,
                       DATA_OUT_1,
                       DATA_OUT_2);
 
-CPU_SC cpu(.CLOCK(CLOCK),
-           .INSTRUCTION(instructionOut),
-           .REG_DATA1(DATA_OUT_1),
-           .REG_DATA2(DATA_OUT_2),
-           .data_memory_out(data_memory_out),
-           .READ_REG_1(READ_REG_1),
-           .READ_REG_2(READ_REG_2),
-           .WRITE_REG(WRITE_REG),
-           .ALU_Result_Out(ALU_Result_Out),
-           .WRITE_REG_DATA(WRITE_DATA),
-           .PC(instructionPC),
-           .REG2LOC(REG2LOC),
-           .REGWRITE(REGWRITE),
-           .MEMREAD(MEMREAD),
-           .MEMWRITE(MEMWRITE),
-           .BRANCH(BRANCH)
+CPU_SC cpu( .CLOCK(CLOCK),
+            .INSTRUCTION(instructionOut),
+            .PC(instructionPC),
+            .CONTROL_REG2LOC(CONTROL_REG2LOC),
+            .CONTROL_REGWRITE(CONTROL_REGWRITE),
+            .CONTROL_MEMREAD(CONTROL_MEMREAD),
+            .CONTROL_MEMWRITE(CONTROL_MEMWRITE),
+            .CONTROL_BRANCH(CONTROL_BRANCH),
+            .READ_REG_1(READ_REG_1),
+            .READ_REG_2(READ_REG_2),
+            .WRITE_REG(WRITE_REG),
+            .REG_DATA1(DATA_OUT_1),
+            .REG_DATA2(DATA_OUT_2),
+            .ALU_Result_Out(ALU_Result_Out),
+            .data_memory_out(data_memory_out),
+            .WRITE_REG_DATA(WRITE_DATA)
           );
 
 
