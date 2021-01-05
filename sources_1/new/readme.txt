@@ -1,7 +1,7 @@
 /*
  * @Author       : magicwenli
  * @Date         : 2021-01-02 13:35:24
- * @LastEditTime : 2021-01-05 13:14:33
+ * @LastEditTime : 2021-01-05 14:34:50
  * @Description  : 
  */
 
@@ -17,7 +17,7 @@ B4 00 00 40     // CBZ x0, #2              x0 == 0, pc =+ 8     pc = 1c
 F8 40 01 42     // LDR x2 [x10]            pass
 AA 03 00 46     // ORR x6, x2, x3          x6 = 3653    0xE45   pc = 20
 8A 03 00 47     // AND x7, x2, x3          x7 = 3657    0xE49
-F8 00 10 E4     // STR x4, [x7, #1]
+F8 00 10 E4     // STR x4, [x7, #1]        
 14 00 00 03     // B #2
 F8 40 11 43     // LDR x3, [x10, #1]
 8B 01 00 08     // ADD x8, x0, x1

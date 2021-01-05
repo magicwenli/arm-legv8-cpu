@@ -72,11 +72,11 @@ CPU_SC cpu( .CLOCK(CLOCK),
 
 initial begin
     CLOCK = 1'b0;
-    #6 $finish;
+    #300 $finish;
 end
 
 always begin
-    #1 CLOCK = ~CLOCK;
+    #10 CLOCK = ~CLOCK;
 end
 
 endmodule
