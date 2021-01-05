@@ -1,8 +1,8 @@
 //*****
 //  Author       : magicwenli
 //  Date         : 2020-12-31 15:54:41
-//  LastEditTime : 2021-01-05 01:16:46
-//  Description  : CPU 主文�?????
+//  LastEditTime : 2021-01-05 13:52:13
+//  Description  : CPU 主文�?????
 //*****
 `timescale 1ns / 1ps
 
@@ -24,6 +24,7 @@ module CPU_SC( input CLOCK,
                output reg [63: 0] PC
              );
 
+reg [3:0] STATE;
 reg [4: 0] tempRegNum1;
 reg [4: 0] tempRegNum2;
 reg [10: 0] tempInstruction;
@@ -81,6 +82,7 @@ ALU PCShifter(PC, tempShiftImmediate, 4'b0010, shiftPC, shiftPCZero);
 /* Initialize when the CPU is first run */
 initial begin
     PC = 0;
+    STATE = 4'b0000;
     CONTROL_REG2LOC = 1'bz;
     CONTROL_MEM2REG = 1'bz;
     CONTROL_REGWRITE = 1'bz;
@@ -92,6 +94,9 @@ initial begin
     tempBranchZero = tempALUZero & CONTROL_BRANCH;
     CONTROL_JUMP = CONTROL_UNCON_BRANCH | tempBranchZero;
 end
+
+
+
 
 /* Parse and set the CPU's Control bits */
 always @(posedge CLOCK or INSTRUCTION)begin
@@ -211,120 +216,4 @@ always @(posedge CLOCK or INSTRUCTION)begin
     end
 end
 
-always @(posedge CLOCK) begin
-
-    // Parse the incoming instruction for a given PC
-    tempInstruction = INSTRUCTION[31: 21];
-    tempRegNum1 = INSTRUCTION[20: 16];
-    tempRegNum2 = INSTRUCTION[4: 0];
-    READ_REG_1 = INSTRUCTION[9: 5];
-    WRITE_REG = INSTRUCTION[4: 0];
-
-    if (INSTRUCTION[31: 26] == 6'b000101) begin // Control bits for B
-        CONTROL_REG2LOC = 1'b0;
-        CONTROL_MEM2REG = 1'b0;
-        CONTROL_REGWRITE = 1'b0;
-        CONTROL_MEMREAD = 1'b0;
-        CONTROL_MEMWRITE = 1'b0;
-        CONTROL_ALUSRC = 1'b0;
-        CONTROL_ALU_OP = 2'b01;
-        CONTROL_BRANCH = 1'b0;
-        CONTROL_UNCON_BRANCH = 1'b1;
-
-    end
-    else if (INSTRUCTION[31: 24] == 8'b10110100) begin // Control bits for CBZ
-        CONTROL_REG2LOC = 1'b0;
-        CONTROL_MEM2REG = 1'b0;
-        CONTROL_REGWRITE = 1'b0;
-        CONTROL_MEMREAD = 1'b0;
-        CONTROL_MEMWRITE = 1'b0;
-        CONTROL_ALUSRC = 1'b0;
-        CONTROL_ALU_OP = 2'b01;
-        CONTROL_BRANCH = 1'b1;
-        CONTROL_UNCON_BRANCH = 1'b0;
-
-    end
-    else begin // R-Type Control Bits
-
-        CONTROL_BRANCH = 1'b0;
-        CONTROL_UNCON_BRANCH = 1'b0;
-
-        case (tempInstruction)
-            11'b11111000010 : begin // Control bits for LDR
-                CONTROL_REG2LOC = 1'bx;
-                CONTROL_MEM2REG = 1'b1;
-                CONTROL_REGWRITE = 1'b1;
-                CONTROL_MEMREAD = 1'b1;
-                CONTROL_MEMWRITE = 1'b0;
-                CONTROL_ALUSRC = 1'b1;
-                CONTROL_ALU_OP = 2'b00;
-            end
-
-            11'b11111000000 : begin //Control bits for STR
-                // Control Bits
-                CONTROL_REG2LOC = 1'b1;
-                CONTROL_MEM2REG = 1'bx;
-                CONTROL_REGWRITE = 1'b0;
-                CONTROL_MEMREAD = 1'b0;
-                CONTROL_MEMWRITE = 1'b1;
-                CONTROL_ALUSRC = 1'b1;
-                CONTROL_ALU_OP = 2'b00;
-            end
-
-            11'b10001011000 : begin //Control bits for ADD
-                CONTROL_REG2LOC = 1'b0;
-                CONTROL_MEM2REG = 1'b0;
-                CONTROL_REGWRITE = 1'b1;
-                CONTROL_MEMREAD = 1'b0;
-                CONTROL_MEMWRITE = 1'b0;
-                CONTROL_ALUSRC = 1'b0;
-                CONTROL_ALU_OP = 2'b10;
-            end
-
-            11'b11001011000 : begin //Control bits for SUB
-                CONTROL_REG2LOC = 1'b0;
-                CONTROL_MEM2REG = 1'b0;
-                CONTROL_REGWRITE = 1'b1;
-                CONTROL_MEMREAD = 1'b0;
-                CONTROL_MEMWRITE = 1'b0;
-                CONTROL_ALUSRC = 1'b0;
-                CONTROL_ALU_OP = 2'b10;
-            end
-
-            11'b10001010000 : begin //Control bits for AND
-                CONTROL_REG2LOC = 1'b0;
-                CONTROL_MEM2REG = 1'b0;
-                CONTROL_REGWRITE = 1'b1;
-                CONTROL_MEMREAD = 1'b0;
-                CONTROL_MEMWRITE = 1'b0;
-                CONTROL_ALUSRC = 1'b0;
-                CONTROL_ALU_OP = 2'b10;
-            end
-
-            11'b10101010000 : begin //Control bits for ORR
-                CONTROL_REG2LOC = 1'b0;
-                CONTROL_MEM2REG = 1'b0;
-                CONTROL_REGWRITE = 1'b1;
-                CONTROL_MEMREAD = 1'b0;
-                CONTROL_MEMWRITE = 1'b0;
-                CONTROL_ALUSRC = 1'b0;
-                CONTROL_ALU_OP = 2'b10;
-            end
-        endcase
-    end
-
-    //Determine whether to branch
-    tempBranchZero = tempALUZero & CONTROL_BRANCH;
-    CONTROL_JUMP = CONTROL_UNCON_BRANCH | tempBranchZero;
-
-    // For non-branch code, set the next sequential PC value
-    if (CONTROL_JUMP == 1'b0) begin
-        PC <= #1 nextnextPC;
-    end
-    
-    // Set the PC to the jumped value
-    if (CONTROL_JUMP == 1'b1) begin
-        PC = #1 nextnextPC - 4;
-    end
-end
 endmodule
