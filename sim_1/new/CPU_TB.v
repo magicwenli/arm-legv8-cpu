@@ -72,7 +72,7 @@ CPU_SC cpu( .CLOCK(CLOCK),
 
 initial begin
     CLOCK = 1'b0;
-    #30 $finish;
+    #6 $finish;
 end
 
 always begin

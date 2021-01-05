@@ -94,12 +94,8 @@ initial begin
 end
 
 /* Parse and set the CPU's Control bits */
-always @(INSTRUCTION)begin
-    
-    // Set the PC to the jumped value
-    if (CONTROL_JUMP == 1'b1) begin
-        PC = #1 nextnextPC - 4;
-    end
+always @(posedge CLOCK or INSTRUCTION)begin
+
 
     // Parse the incoming instruction for a given PC
     tempInstruction = INSTRUCTION[31: 21];
@@ -208,16 +204,15 @@ always @(INSTRUCTION)begin
     // For non-branch code, set the next sequential PC value
     if (CONTROL_JUMP == 1'b0) begin
         PC <= #1 nextnextPC;
+    end
+    // Set the PC to the jumped value
+    if (CONTROL_JUMP == 1'b1) begin
+        PC = #1 nextnextPC;
     end
 end
 
 always @(posedge CLOCK) begin
 
-    // Set the PC to the jumped value
-    if (CONTROL_JUMP == 1'b1) begin
-        PC = #1 nextnextPC - 4;
-    end
-
     // Parse the incoming instruction for a given PC
     tempInstruction = INSTRUCTION[31: 21];
     tempRegNum1 = INSTRUCTION[20: 16];
@@ -325,6 +320,11 @@ always @(posedge CLOCK) begin
     // For non-branch code, set the next sequential PC value
     if (CONTROL_JUMP == 1'b0) begin
         PC <= #1 nextnextPC;
+    end
+    
+    // Set the PC to the jumped value
+    if (CONTROL_JUMP == 1'b1) begin
+        PC = #1 nextnextPC - 4;
     end
 end
 endmodule
